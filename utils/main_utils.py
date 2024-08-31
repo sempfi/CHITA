@@ -283,7 +283,7 @@ def mnist_get_datasets(data_dir):
 
     return train_dataset, test_dataset
 
-def model_factory(arch, dset_path, pretrained=True):
+def model_factory(temp_model, arch, dset_path, pretrained=True):
     if arch == 'mlpnet':
         model = MlpNet(args=None,dataset='mnist')
         train_dataset,test_dataset = mnist_get_datasets(dset_path)
@@ -378,9 +378,7 @@ def model_factory(arch, dset_path, pretrained=True):
         return model,train_dataset,test_dataset,criterion,modules_to_prune
 
     elif arch == 'resnet50':
-        # model = torchvision.models.resnet50(weights=ResNet50_Weights.DEFAULT)
-        # model.fc = nn.Linear(temp_model.fc.in_features, 10)
-        model = None
+        model = temp_model
         criterion = torch.nn.functional.cross_entropy
 
         modules_to_prune = []
