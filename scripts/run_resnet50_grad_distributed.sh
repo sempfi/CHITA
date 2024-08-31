@@ -71,7 +71,7 @@ EXP_NAME="${sparsity}_seed_${seed}_FT0.1"
 echo $EXP_NAME
 
 CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch \
---nproc_per_node=4 run_experiment_gradual.py --arch resnet50 --dset imagenet --num_workers 12 \
+--nproc_per_node=4 run_experiment_gradual.py --arch resnet50 --dset cifar10 --num_workers 12 \
 --exp_name ${EXP_NAME} --exp_id ${seed} --test_batch_size 256 --train_batch_size 256 \
 --fisher_subsample_size ${fisher_subsample_size} --fisher_mini_bsz ${fisher_mini_bsz} \
 --num_iterations 1 --num_stages ${num_stages} --seed ${seed} \
