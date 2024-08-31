@@ -32,7 +32,7 @@ then
     max_lr=0.1
     min_lr=0.00001
     prune_every=12
-    nprune_epochs=1
+    nprune_epochs=2
     nepochs=5
     warm_up=0
     ft_max_lr=0.05
