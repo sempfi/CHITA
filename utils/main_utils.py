@@ -6,7 +6,7 @@ import random
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
-from torchvision.models import resnet50 as torch_resnet50
+from torchvision.models import ResNet50_Weights
 from models.resnet_cifar10 import resnet20
 from models.wideresnet_cifar import Wide_ResNet
 from models.mlpnet import MlpNet
@@ -61,6 +61,7 @@ def load_model(path, model):
             tmp[k.replace('module.', '')] = tmp[k]
             del tmp[k]
     model.load_state_dict(tmp)
+
 
 
 def imagenet_get_datasets(data_dir):
@@ -272,7 +273,7 @@ def mnist_get_datasets(data_dir):
 
     return train_dataset, test_dataset
 
-def model_factory(arch,dset_path,pretrained=True):
+def model_factory(arch, dset_path, pretrained=True):
     if arch == 'mlpnet':
         model = MlpNet(args=None,dataset='mnist')
         train_dataset,test_dataset = mnist_get_datasets(dset_path)
@@ -367,21 +368,20 @@ def model_factory(arch,dset_path,pretrained=True):
         return model,train_dataset,test_dataset,criterion,modules_to_prune
 
     elif arch == 'resnet50':
-        model = torch_resnet50(weights=None)
-        train_dataset,test_dataset = imagenet_get_datasets(dset_path)
+        model = torchvision.models.resnet50(weights=ResNet50_Weights.DEFAULT)
+        model.fc = nn.Linear(temp_model.fc.in_features, 10)
         criterion = torch.nn.functional.cross_entropy
 
         modules_to_prune = []
         for name, layer in model.named_modules():
             if isinstance(layer, torch.nn.Conv2d) or isinstance(layer, torch.nn.Linear):
                 modules_to_prune.append(name+'.weight')
-        print('Pruning modeules',modules_to_prune)
-        if pretrained:
-            
+        print('Pruning modeules', modules_to_prune)
+        
+        if pretrained == True:    
             path = 'checkpoints/ResNet50-Dense.pth'
-            #path = 'checkpoints/resnet50-19c8e357.pth'
             
-            state_trained = torch.load(path,map_location=torch.device('cpu'))['state_dict']
+            state_trained = torch.load(path, map_location=torch.device('cpu'))['state_dict']
             new_state_trained = model.state_dict()
             for k in state_trained:
                 key = k[7:]
