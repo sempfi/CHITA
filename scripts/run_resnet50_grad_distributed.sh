@@ -3,8 +3,8 @@
 TASK_ID=0
 EXP_ID="0_0"
 
-CHECKPOINT_PATH="/home/rbenbaki/CHITA/results/resnet50_imagenet_0.9_seed_2/data2_1683490689.csv_epoch90.pth"
-FIRST_EPOCH=91
+CHECKPOINT_PATH="/content/model_checkpoint_ResNet50_cifar100_5.pth"
+FIRST_EPOCH=6
 
 echo $TASK_ID
 echo $EXP_ID
@@ -32,8 +32,8 @@ then
     max_lr=0.1
     min_lr=0.00001
     prune_every=12
-    nprune_epochs=7
-    nepochs=100
+    nprune_epochs=1
+    nepochs=5
     warm_up=0
     ft_max_lr=0.05
     ft_max_lr=0.1
@@ -63,8 +63,8 @@ echo $MASTER_PORT
 export OMP_NUM_THREADS=24
 
 
-CHECKPOINT_PATH="/home/rbenbaki/CHITA/results/resnet50_imagenet_0.9_seed_2/data2_1683490689.csv_epoch71.pth"
-FIRST_EPOCH=72
+CHECKPOINT_PATH="/content/model_checkpoint_ResNet50_cifar100_1.pth"
+FIRST_EPOCH=2
 seed=2
 sparsity=0.9
 EXP_NAME="${sparsity}_seed_${seed}_FT0.1"
